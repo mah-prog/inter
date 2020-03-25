@@ -1,0 +1,31 @@
+#%RAML 1.0
+
+title: API-Vitam - DSL
+version: v1
+baseUri: https://api.vitam.gouv.fr/dsl/{version}
+protocols: [ HTTPS ]
+
+uses:
+  StandardTypes: libraries/StandardTypes.raml
+  StandardTraits: libraries/StandardTraits.raml
+  AccessTypes: libraries/AccessTypes.raml
+  AccessTraits: libraries/AccessTraits.raml
+
+mediaType: application/json
+
+types:
+  _reserved:
+    type: string
+
+documentation:
+  - title: Licence
+    content: !include docs-fr/license.md
+
+  - title: DSL Vitam
+    content: !include docs-fr/dsl.md
+
+  - title: Manipulation des règles de gestion
+    content: !include docs-fr/regles-gestion.md
+
+  - title: Exemple DSL Vitam
+    content: !include docs-fr/exemple-dsl.md

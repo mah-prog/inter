@@ -1,0 +1,138 @@
+#%RAML 1.0
+
+title: API-Vitam - Logbook
+version: v1
+baseUri: https://api.vitam.gouv.fr/access-external/{version}
+protocols: [ HTTPS ]
+
+uses:
+  StandardTypes: libraries/StandardTypes.raml
+  StandardTraits: libraries/StandardTraits.raml
+  LogbookTypes: libraries/LogbookTypes.raml
+  LogbookTraits: libraries/LogbookTraits.raml
+  DslTypes: libraries/DslTypes.raml
+
+mediaType: application/json
+
+types:
+  _reserved:
+    type: string
+
+documentation:
+  - title: Avertissements
+    content: !include docs-fr/avertissement.md
+
+  - title: Licence
+    content: !include docs-fr/license.md
+
+  - title: API Logbook
+    content: !include docs-fr/logbook.md
+
+/logbookoperations:
+  displayName: Operations Logbooks
+  description: |
+    API d'accès aux Journaux d'opérations (Logbooks Operations). Ce point d'entrée permet de chercher une opération (entrée, audit, élimination, préservation, ...).
+    La requête utilise le langage de requête (DSL) de Vitam en entrée et retourne une liste de journaux d'opérations selon le DSL Vitam en cas de succès.
+    La recherche sur cette API retourne pour chaque opération, la première entrée (la création à la date de démarrage de l'opération) et la dernière entrée (dans l'état connu par le journal à la date de la dernière étape de cette opération).
+  get:
+    description: |
+      Requête qui retourne des résultats contant des Journaux d'opérations.
+      La requête utilise le langage de requête DSL de type **recherche simple (SELECT SINGLE)** de Vitam en entrée et retourne une liste d'Unités d'archives selon le DSL Vitam en cas de succès.
+    is: [LogbookTraits.OperationListingResponse ]
+  post:
+    description: |
+      Requête qui retourne des résultats contant des Journaux d'opérations. La requête utilise POST avec X-Http-Method-Override: GET.
+      La requête utilise le langage de requête DSL de type **recherche simple (SELECT SINGLE)** de Vitam en entrée et retourne une liste d'Unités d'archives selon le DSL Vitam en cas de succès.
+    is: [LogbookTraits.OperationListingResponse, StandardTraits.OverrideGet]
+
+
+  /{idOp}:
+    displayName: Operation Logbook
+    description: |
+      Accès à une opération.
+      La requête utilise le langage de requête (DSL) de Vitam en entrée et retourne les informations spécifiées (projection indiquée dans la requête) pour l'opération donnée.
+    uriParameters:
+      idOp:
+        required: true
+        description: Identifiant de l'opération
+    get:
+      description: |
+        Requête qui retourne des informations spécifiées sur un journal d'opération.
+        La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne une liste de journaux d'opérations contenant 1 seul résultat selon le DSL Vitam en cas de succès.
+      is: [LogbookTraits.OperationItemResponse]
+    post:
+      description: |
+        Requête qui retourne des informations spécifiées sur un journal d'opération. La requête utilise POST avec X-Http-Method-Override: GET.
+        La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne une liste de journaux d'opérations contenant 1 seul résultat selon le DSL Vitam en cas de succès.
+      is: [LogbookTraits.OperationItemResponse, StandardTraits.OverrideGet]
+
+/logbookunitlifecycles:
+  displayName: Unit Life Cycle Logbook
+  description: |
+    API d'accès aux Journaux de cycle de vie des Unités d'archives.
+    La requête utilise le langage de requête (DSL) de Vitam en entrée et retourne une liste de journaux de cycles de vie d'Unités d'archives selon le DSL Vitam en cas de succès.
+    La recherche sur cette API retourne uniquement la première ligne et la dernière connue pour chaque journal du cycle de vie.
+
+  /{id_lfc}:
+    uriParameters:
+      id_lfc:
+        required: true
+        description: Identifiant du cycle de vie
+    displayName: Unit Life Cycle
+    description: |
+      Accès à un cycle de vie d'Unité d'archive.
+      La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne les informations spécifiées (projection indiquée dans la requête) pour le cycle de vie recherché.
+      Le cycle de vie concerné est retourné en fonction de la projection (si la projection n'est pas indiquée, le cycle de vie est retourné complet).
+    get:
+      description : |
+        Requête qui retourne des informations spécifiées sur un journal de cycle de vie d'une Unité d'archive.
+        La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne une liste de journaux de cycles de vie contenant 1 seul résultat selon le DSL Vitam en cas de succès.
+      is: [LogbookTraits.UnitLifeCycleItemResponse]
+    post:
+      description : |
+        Requête qui retourne des informations spécifiées sur un journal de cycle de vie d'une Unité d'archive. La requête utilise POST avec X-Http-Method-Override: GET.
+        La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne une liste de journaux de cycles de vie contenant 1 seul résultat selon le DSL Vitam en cas de succès.
+      is: [LogbookTraits.UnitLifeCycleItemResponse, StandardTraits.OverrideGet]
+
+/logbookobjectslifecycles:
+  displayName: Object Life Cycle Logbook
+  description: |
+    API d'accès aux Journaux du Cycle de Vie des archives (Object).
+    La requête utilise le langage de requête (DSL) de Vitam en entrée et retourne une liste de journaux de cycles de vie d'Objets selon le DSL Vitam en cas de succès.
+    La recherche sur cette API retourne uniquement la première ligne et la dernière connue pour chaque journal du cycle de vie.
+
+  /{id_lfc}:
+    uriParameters:
+      id_lfc:
+        required: true
+        description: Identifiant du cycle de vie
+    displayName: Object Life Cycle
+    description: |
+      Accès à un cycle de vie (Object).
+      La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne les informations spécifiées (projection indiquée dans la requête) pour le cycle de vie recherché.
+      Le cycle de vie concerné est retourné en fonction de la projection (si la projection n'est pas indiquée, le cycle de vie est retourné complet).
+    get:
+      description : |
+        Requête qui retourne des informations spécifiées sur un journal de cycle de vie d'un Objet.
+        La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne une liste de journaux de cycles de vie contenant 1 seul résultat selon le DSL Vitam en cas de succès.
+      is: [LogbookTraits.ObjectLifeCycleItemResponse]
+    post:
+      description : |
+        Requête qui retourne des informations spécifiées sur un journal de cycle de vie d'un Objet. La requête utilise POST avec X-Http-Method-Override: GET.
+        La requête utilise le langage de requête DSL de type **recherche unitaire (GET BY ID)** de Vitam en entrée et retourne une liste de journaux de cycles de vie contenant 1 seul résultat selon le DSL Vitam en cas de succès.
+      is: [LogbookTraits.ObjectLifeCycleItemResponse, StandardTraits.OverrideGet]
+
+/:
+  displayName: Endpoints
+  description: |
+   API qui liste les endpoints de la ressource /access-external/{version}.
+  options:
+    description: |
+      Requête qui retourne la liste des endpoints
+    is: [ StandardTraits.StandardHeader200,
+      StandardTraits.StandardHeader404, StandardTraits.StandardHeader503 ]
+
+/status:
+  get:
+    is: [ StandardTraits.StandardHeader204,
+      StandardTraits.StandardHeader404, StandardTraits.StandardHeader503 ]
