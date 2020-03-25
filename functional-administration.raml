@@ -111,11 +111,7 @@ documentation:
       Requête qui retourne des résultats contenant des Règles de gestion.
       La requête utilise le langage de requête DSL de type **recherche simple (SELECT SINGLE)** de Vitam en entrée et retourne une liste de Règles de gestion selon le DSL Vitam en cas de succès.
     is: [AdminTraits.AdminListingResponse]
-    headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
+
   post:
     description: |
       Requête qui retourne des résultats contenant des Règles de gestion si la requête utilise POST avec X-Http-Method-Override: GET.
