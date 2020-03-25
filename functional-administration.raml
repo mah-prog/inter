@@ -534,43 +534,6 @@ documentation:
         Sinon, la requête doit spécifier le Content-Type comme application/octet-stream. Dans ce cas, elle permet de mettre à jour le fichier RNG ou XSD lié.
        is: [AdminTraits.AdminUpload, AdminTraits.AdminProfileUpload]
 
-/griffin:
-  displayName: griffons
-  description: Téléverser le référentiel des griffon
-  get:
-    is: [AdminTraits.AdminListingResponse]
-    headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
-  post:
-    description: Téléverse le référentiel des griffons ou annule et remplace les référentiels existant
-    is: [AdminTraits.AdminListingResponse, AdminTraits.AdminUpload]
-    headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
-  /{id_document}:
-    uriParameters:
-      id_document:
-        required: true
-        description: Identifiant du griffon
-    displayName: griffons
-    description: API qui permet de télécharger un griffon via l'identifiant du document
-    get:
-      description: |
-        Permet de faire une requête par identifiant sur un griffon.
-        L'identifiant du griffon est la chaîne "id_document" dans l'URL.
-        la requête renvoie alors le griffon au format json.
-      is: [AdminTraits.AdminListingResponse]
-      headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
-
 /preservationScenario:
   displayName: scénario de préservation
   description: Télécharger le référentiel des scénario de préservation
