@@ -111,7 +111,6 @@ documentation:
       Requête qui retourne des résultats contenant des Règles de gestion.
       La requête utilise le langage de requête DSL de type **recherche simple (SELECT SINGLE)** de Vitam en entrée et retourne une liste de Règles de gestion selon le DSL Vitam en cas de succès.
     is: [AdminTraits.AdminListingResponse]
-
   post:
     description: |
       Requête qui retourne des résultats contenant des Règles de gestion si la requête utilise POST avec X-Http-Method-Override: GET.
@@ -138,10 +137,7 @@ documentation:
       description: |
         Retourne une liste de Règles de gestion contenant 1 seul résultat en cas de succès.
       is: [AdminTraits.AdminItemResponse]
-        X-Tenant-Id:
-          required: true
-        X-Access-Contract-Id:
-          required: false
+    
     post:
       description: |
         Retourne une liste de Règles de gestion contenant 1 seul résultat en cas de succès. La requête utilise POST avec X-Http-Method-Override: GET
@@ -358,11 +354,7 @@ documentation:
         Requête qui modifie un Contrat d'entrée.
         La requête utilise le langage de requête DSL de type **modification unitaire (UPDATE BY ID)** de Vitam en entrée et retourne le statut de la mise à jour en résultat selon le DSL Vitam en cas de succès.
        is: [AdminTraits.AdminUpdate]
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
-
+ 
 /managementcontracts:
   displayName: Management contracts
   description: |
@@ -468,14 +460,9 @@ documentation:
         required: false
     put:
        description: |
-        Requête qui modifie un Contexte.
-        La requête utilise le langage de requête DSL de type **modification unitaire (UPDATE BY ID)** de Vitam en entrée et retourne le statut de la mise à jour en résultat selon le DSL Vitam en cas de succès.
+          Requête qui modifie un Contexte.
+          La requête utilise le langage de requête DSL de type **modification unitaire (UPDATE BY ID)** de Vitam en entrée et retourne le statut de la mise à jour en résultat selon le DSL Vitam en cas de succès
        is: [AdminTraits.AdminUpload]
-      headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
 
 /profiles:
   displayName: Profiles
@@ -546,53 +533,6 @@ documentation:
         Dans ce cas, la requête utilise le langage de requête DSL de type **modification unitaire (UPDATE BY ID)** de Vitam en entrée et retourne le statut de la mise à jour en résultat selon le DSL Vitam en cas de succès.
         Sinon, la requête doit spécifier le Content-Type comme application/octet-stream. Dans ce cas, elle permet de mettre à jour le fichier RNG ou XSD lié.
        is: [AdminTraits.AdminUpload, AdminTraits.AdminProfileUpload]
-       headers:
-         Content-Type:
-           description: Requis pour importer des profils.
-           required: false
-           enum: [ "application/json", "application/octet-stream" ]
-          X-Tenant-Id:
-            required: true
-          X-Access-Contract-Id:
-            required: false
-
-/griffin:
-  displayName: griffons
-  description: Téléverser le référentiel des griffon
-  get:
-    description: Permet de télécharger le référentiel des griffons
-    is: [AdminTraits.AdminListingResponse]
-    headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
-  post:
-    description: Téléverse le référentiel des griffons ou annule et remplace les référentiels existant
-    is: [AdminTraits.AdminListingResponse, AdminTraits.AdminUpload]
-    headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
-  /{id_document}:
-    uriParameters:
-      id_document:
-        required: true
-        description: Identifiant du griffon
-    displayName: griffons
-    description: API qui permet de télécharger un griffon via l'identifiant du document
-    get:
-      description: |
-        Permet de faire une requête par identifiant sur un griffon.
-        L'identifiant du griffon est la chaîne "id_document" dans l'URL.
-        la requête renvoie alors le griffon au format json.
-      is: [AdminTraits.AdminListingResponse]
-      headers:
-      X-Tenant-Id:
-        required: true
-      X-Access-Contract-Id:
-        required: false
 
 /preservationScenario:
   displayName: scénario de préservation
@@ -747,21 +687,11 @@ documentation:
         required: true
       X-Access-Contract-Id:
         required: false
-    put:
-       description: |
-        Requête qui modifie un Profil de sécurité.
-        La requête utilise le langage de requête DSL de type **modification unitaire (UPDATE BY ID)** de Vitam en entrée et retourne le statut de la mise à jour en résultat selon le DSL Vitam en cas de succès.
-       is: [AdminTraits.AdminUpload]
-      headers:
-        X-Tenant-Id:
-          required: true
-        X-Access-Contract-Id:
-          required: false
     post:
       description: |
         Retourne une liste de Profils de sécurité contenant 1 seul résultat en cas de succès. La requête utilise POST avec X-Http-Method-Override: GET.
       is: [AdminTraits.AdminItemResponse, StandardTraits.OverrideGet]
-      headers:
+    headers:
         X-Http-Method-Override:
           required: true
         X-Tenant-Id:
@@ -1318,3 +1248,40 @@ documentation:
   get:
     is: [ StandardTraits.StandardHeader204,
       StandardTraits.StandardHeader401, StandardTraits.StandardHeader404, StandardTraits.StandardHeader503 ]
+/griffin:
+  displayName: griffons
+  description: Téléverser le référentiel des griffon
+  get:
+    description: Permet de télécharger le référentiel des griffons
+    is: [AdminTraits.AdminListingResponse]
+    headers:
+      X-Tenant-Id:
+        required: true
+      X-Access-Contract-Id:
+        required: false
+  post:
+    description: Téléverse le référentiel des griffons ou annule et remplace les référentiels existant
+    is: [AdminTraits.AdminListingResponse, AdminTraits.AdminUpload]
+    headers:
+      X-Tenant-Id:
+        required: true
+      X-Access-Contract-Id:
+        required: false
+  /{id_document}:
+    uriParameters:
+      id_document:
+        required: true
+        description: Identifiant du griffon
+    displayName: griffons
+    description: API qui permet de télécharger un griffon via l'identifiant du document
+    get:
+      description: |
+        Permet de faire une requête par identifiant sur un griffon.
+        L'identifiant du griffon est la chaîne "id_document" dans l'URL.
+        la requête renvoie alors le griffon au format json.
+      is: [AdminTraits.AdminListingResponse]
+      headers:
+      X-Tenant-Id:
+        required: true
+      X-Access-Contract-Id:
+        required: false
