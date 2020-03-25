@@ -1,0 +1,19 @@
+{
+  "dslQuery" : {
+    "$roots": [],
+    "$query": [
+      {
+        "$eq": {
+          "#id": "aeaqaaaaaaezyoa6abacealifcom6xyaaaaq"
+        }
+      }
+    ],
+    "$threshold": 40,
+    "$filter": {},
+    "$projection": {}
+  },
+  "scenarioId" : "PSC-000001",
+  "targetUsage": "BinaryMaster",
+  "sourceUsage": "Dissemination",
+  "version": "FIRST"
+}

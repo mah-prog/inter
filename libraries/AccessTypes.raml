@@ -1,0 +1,313 @@
+#%RAML 1.0 Library
+
+usage: |
+  Use to define global types for Access
+
+uses:
+    DslTypes: DslTypes.raml
+    BatchUpdateTypes: BatchUpdateTypes.raml
+
+types:
+  AccessMultipleQuery:
+      type: DslTypes.DslMultipleQuery
+      displayName: Requête DSL multiple pour Access
+      description: Requête DSL multiple Vitam externe pour Access
+
+  EliminationRequest:
+      displayName: Requête DSL multiple de traitement de masse pour élimination
+      description: Requête DSL multiple Vitam de traitement de masse pour élimination
+      type: object
+      properties:
+        dslRequest:
+          description: Contient la requête de recherche
+          type: DslTypes.DslBatchProcessionQuery
+        date:
+          description: La date d'élimination
+          type: string
+      example:
+        {
+           "dslRequest": {
+             "$roots": [ "id0" ],
+             "$query": [
+               {
+                 "$match": { "title": "titre" },
+                 "$depth": 4
+               }
+             ],
+             "$threshold": 10000
+           },
+           "date": "2018-01-23"
+        }
+
+  EliminationResponse:
+      displayName: Requête DSL multiple de traitement de masse pour élimination
+      description: Requête DSL multiple Vitam de traitement de masse pour élimination
+      type: object
+      properties:
+        httpCode:
+          description: Http status code la reponse
+          type: integer
+      example:
+        {
+           "httpCode" : 202
+        }
+
+  PreservationRequest:
+      displayName: Requête DSL multiple de traitement de masse pour la préservation
+      description: Requête DSL multiple de traitement de masse pour la préservation
+      type: object
+      properties:
+        dslQuery:
+          description: Contient la requête de recherche
+          type: DslTypes.DslBatchProcessionQuery
+        scenarioId:
+          description: L'identifiant du scénario de préservation
+          type: string
+        targetUsage:
+          description: usage du binaire générer
+          type: string
+        sourceUsage:
+          description: usage du binaire cible
+          type: string
+        version:
+          description: La version du binaire sur lequel on veux opérer une action de préservation
+          type: string
+      example:
+        {
+          "dslQuery" : {
+            "$roots": [],
+            "$query": [
+              {
+                "$eq": {
+                  "#id": "aeaqaaaaaaezyoa6abacealifcom6xyaaaaq"
+                }
+              }
+            ],
+            "$threshold": 40,
+            "$filter": {},
+            "$projection": {}
+           },
+          "scenarioId" : "PSC-000001",
+          "targetUsage": "BinaryMaster",
+          "sourceUsage": "BinaryMaster",
+          "version": "FIRST"
+        }
+
+  PreservationResponse:
+      displayName: Requête DSL multiple de traitement de masse pour la préservation
+      description: Requête DSL multiple de traitement de masse pour la préservation
+      type: object
+      properties:
+        httpCode:
+          description: Http status code la reponse
+          type: integer
+      example:
+        {
+        "httpCode" : 202
+        }
+
+  UnitBatchUpdateRequest:
+    displayName: Requête de lancement du traitement de masse pour mise à jour des métadonnées de gestion des AU
+    description: Requête de lancement du traitement de masse pour mise à jour des métadonnées de gestion des AU
+    type: object
+    properties:
+      dslRequest:
+        description: Contient la requête de recherche
+        type: object
+      ruleActions:
+        description: |
+          Contient le POJO de mise à jour des métadonnées de gestion (Voir exemple).
+
+          Il est possible d'ajouter (add), mettre à jour (update) ou supprimer (delete) des catégories de règles de gestion (règles et propriétés), ainsi que de mettre à jour les métadonnées de gestion hors catégories de règles (addOrUpdateMetadata/deleteMetadata).
+
+          Pour les catégories de règles de gestion, voici les champs autorisés à la racine des catégories (règles et propriétés):
+
+          | Champ                         | Catégorie spécifique       | Commentaire                                                                                                |
+          |-------------------------------|----------------------------|------------------------------------------------------------------------------------------------------------|
+          | Rules                         | Toutes                     | Permet de définir les modifications sur les règles de gestion de l'unité archivistique                     |
+          | PreventInheritance            | Toutes                     | Permet de définir si la catégorie hérite (false) ou non (true) des règles de l'unité archivistique parente |
+          | PreventRulesId                | Toutes                     | Permet de définir une liste de règles qui ne seront pas hérités de l'unité archivistique parente           |
+          | FinalAction                   | StorageRule, AppraisalRule | Permet de définir le sort final de la catégorie (valeurs spécifiques selon la catégorie)                   |
+          | ClassificationLevel           | ClassificationRule         | Permet de définir le niveau de classification                                                              |
+          | ClassificationOwner           | ClassificationRule         | Permet de définir le service émetteur                                                                      |
+          | ClassificationAudience        | ClassificationRule         | Permet de définir le champ de diffusion                                                                    |
+          | ClassificationReassessingDate | ClassificationRule         | Permet de définir la date de réévaluation                                                                  |
+          | NeedReassessingAuthorization  | ClassificationRule         | Permet de définir si les modifications sont soumises (true) ou non (false) à validation humaine            |
+
+          Pour les règles de gestion, voici les champs autorisés dans le tableau de règles (champ Rules) d'une catégorie
+
+          | Champ           | Contraintes                   | Commentaire                                                 |
+          |-----------------|-------------------------------|-----------------------------------------------|
+          | OldRule         | update, obligatoire           | Permet de définir l'identifiant de règle que l'on veut modifier |
+          | Rule            | add/delete, obligatoire; update, facultatif | Permet de définir l'identifiant de la règle que l'ont veut ajouter/supprimer ou de celle remplacant l'ancienne règle |
+          | StartDate       | add/update, facultatif        | Permet de définir la date de début de la règle ajoutée/modifiée |
+          | DeleteStartDate | update, facultatif            | Permet de supprimer (true) la date de début de la règle à mettre à jour |
+        type: object
+    example: !include examples/unitBatchUpdate.json
+
+  AccessMultipleResponse:
+    type: DslTypes.DslMultipeResponse
+    displayName: Réponse DSL multiple pour Access
+    description: Réponse DSL mutiple Vitam externe pour Access
+
+  AccessGetByIdQuery:
+      type: DslTypes.DslGetByIdQuery
+      displayName: Requête DSL unitaire pour Access
+      description: Requête DSL unitaire Vitam externe pour Access
+
+  AccessGetByIdResponse:
+    type: DslTypes.DslGetByIdResponse
+    displayName: Réponse DSL unitaire pour Access
+    description: Réponse DSL unitaire Vitam externe pour Access
+
+  AccessUpdateByIdQuery:
+      type: DslTypes.DslUpdateByIdQuery
+      displayName: Requête DSL unitaire de modification pour Access
+      description: Requête DSL unitaire de modification Vitam externe pour Access
+
+  AccessUpdateByIdResponse:
+    type: DslTypes.DslUpdateByIdResponse
+    displayName: Réponse DSL unitaire de modification pour Access
+    description: Réponse DSL unitaire de modification Vitam externe pour Access
+
+  X-Qualifiers:
+    description: |
+      Qualifiers for Objects. For the moment, only the number version of each qualifier is returned. (see examples)
+    type: string
+    enum:
+      - PhysicalMaster
+      - BinaryMaster
+      - Dissemination
+      - Thumbnail
+      - TextContent
+
+  DipRequest:
+      displayName: Requête pour faire un export DIP
+      description: Requête pour faire un export DIP
+      type: object
+      properties:
+        dipExportType:
+          description: Le type d'export DIP
+          type: string
+          enum: [MINIMAL, FULL]
+          required: true
+        exportWithLogBookLFC:
+          description: True pour inclure les logbook de cycle de vie des unités archivistiques et groupes d'objets
+          type: boolean
+          required: false
+        dslRequest:
+          description: Contient la requête de recherche
+          type: DslTypes.DslMultipleQuery
+          required: true
+        dataObjectVersionToExport:
+          description: L'identifiant du scénario de préservation
+          type: object
+          required: false
+          properties:
+            dataObjectVersions:
+              description: Liste des versions d'objets à inclure dans l'export
+              type: array
+              items:
+                type: string
+        dipRequestParameters:
+          description: Les paramètres nécessaires pour faire un export DIP, ce champs est obligatoire quand le dipExportType est FULL
+          type: object
+          required: false
+          properties:
+            archivalAgreement:
+              description: Contrat d'entrée
+              type: string
+              required: false
+            originatingAgencyIdentifier:
+              description: Identifiant du service producteur
+              type: string
+              required: false
+            comment:
+              description: Intitulé
+              type: string
+              required: false
+            submissionAgencyIdentifier:
+              description: Identifiant du service versant
+              type: string
+              required: false
+            archivalAgencyIdentifier:
+              description: Identifiant du service d'archives. Si Vitam trouve un seul service d'archives pour la selection d'unités archivistiques, ce service sera utilisé par défaut.
+              type: string
+              required: true
+            messageRequestIdentifier:
+              description: Identifiant de la demande
+              type: string
+              required: true
+            requesterIdentifier:
+              description: Identifiant du demandeur
+              type: string
+              required: true
+            authorizationRequestReplyIdentifier:
+              description: Identifiant de la réponse à une demande d'autorisation
+              type: string
+              required: false
+      example: !include examples/dipRequest.json
+
+  TransferRequest:
+      displayName: Requête pour faire un transfert
+      description: Requête pour faire un transfert d'unités archivistiques
+      type: object
+      properties:
+        exportWithLogBookLFC:
+          description: True pour inclure les logbook de cycle de vie des unités archivistiques et groupes d'objets
+          type: boolean
+          required: false
+        dslRequest:
+          description: Contient la requête de recherche
+          type: DslTypes.DslMultipleQuery
+          required: true
+        dataObjectVersionToExport:
+          description: L'identifiant du scénario de préservation
+          type: object
+          required: false
+          properties:
+            dataObjectVersions:
+              description: Liste des versions d'objets à inclure dans l'export
+              type: array
+              items:
+                type: string
+        transferRequestParameters:
+          description: Les paramètres nécessaires pour faire un transfert d'unités archivistiques
+          type: object
+          required: true
+          properties:
+            archivalAgreement:
+              description: Contrat d'entrée
+              type: string
+              required: true
+            originatingAgencyIdentifier:
+              description: Identifiant du service producteur
+              type: string
+              required: true
+            archivalAgencyIdentifier:
+              description: Identifiant du service d'archives
+              type: string
+              required: true
+            comment:
+              description: Intitulé
+              type: string
+              required: false
+            submissionAgencyIdentifier:
+              description: Identifiant du service versant
+              type: string
+              required: false
+            transferringAgency:
+              description: Service versant
+              type: string
+              required: false
+            transferRequestReplyIdentifier:
+              description: Identifiant de la réponse à une demande de transfert
+              type: string
+              required: false
+            relatedTransferReference:
+              description: Référence à un transfert d'archives lié
+              type: array
+              required: false
+              items:
+                type: string
+      example: !include examples/transferRequest.json

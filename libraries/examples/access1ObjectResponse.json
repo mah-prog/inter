@@ -1,0 +1,19 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 1,
+    "size": 1,
+    "offset": 0,
+    "limit": 10000
+  },
+  "$context": {
+    "$projection": { "$fields": { "#id": 1, "#qualifiers": 1, "#type": 1, "#parents": 1 } }
+  },
+  "$results": [
+    {
+      "#id": "id101", "#type": "Document",
+      "#qualifiers": { "BinaryMaster": 5, "Dissemination": 1, "Thumbnail": 1, "TextContent": 1 },
+      "#parents": [ { "#id": "id1", "#type": "DemandeCongés", "#sector": "RessourcesHumaines" } ]
+    }
+  ]
+}

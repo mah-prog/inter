@@ -1,0 +1,99 @@
+#%RAML 1.0 Library
+
+usage: |
+  Use to define global headers for Logbook
+uses:
+  StandardTypes: StandardTypes.raml
+  StandardTraits: StandardTraits.raml
+  DslTypes: DslTypes.raml
+  LogbookTypes: LogbookTypes.raml
+
+traits:
+
+  OperationListingResponse:
+    description: Response model for the listing of Logbook operations
+    is: [ StandardTraits.StandardOptionalHeader,
+       StandardTraits.StandardHeader200, StandardTraits.StandardHeader206,
+      StandardTraits.StandardHeader401, StandardTraits.StandardHeader404, StandardTraits.StandardHeader412 ]
+    body:
+      application/json:
+        description: Contient la requête DSL simple au format JSON.
+        schema: DslTypes.DslSingleQuery
+        example: !include examples/logbookQuery.json
+    responses:
+      200:
+        description: Renvoie la liste des résultats des journaux d'opérations correspondant à la requête DSL
+        body:
+          application/json:
+            description: Réponse DSL single contenant les journaux d'opérations.
+            schema: DslTypes.DslSingleResponse
+            example: !include examples/logbookResponse.json
+
+  OperationItemResponse:
+    description: Response model for one Logbook operation item
+    is: [ StandardTraits.StandardOptionalHeader,
+      StandardTraits.StandardHeader200,
+      StandardTraits.StandardHeader401, StandardTraits.StandardHeader404, StandardTraits.StandardHeader412 ]
+    body:
+      application/json:
+        description: Body contient la requête DSL unitaire au format JSON.
+        schema: DslTypes.DslGetByIdQuery
+        example: !include examples/logbook1Query.json
+    responses:
+      200:
+        description: Renvoie la liste de résultats contenant 1 journal d'opération correspondant à la requête DSL
+        body:
+          application/json:
+            description: one Logbook item
+            schema: DslTypes.DslGetByIdResponse
+            example: !include examples/logbook1Response.json
+
+  UnitLifeCycleItemResponse:
+    description: Response model for one Logbook unit life cycle item
+    is: [ StandardTraits.StandardOptionalHeader,
+      StandardTraits.StandardHeader200,
+      StandardTraits.StandardHeader401, StandardTraits.StandardHeader404, StandardTraits.StandardHeader412 ]
+    body:
+      application/json:
+        description:  Body contient la requête DSL unitaire au format JSON.
+        schema: DslTypes.DslGetByIdQuery
+        example: !include examples/logbook1Query.json
+    responses:
+      200:
+        description: Renvoie la liste de résultats contenant 1 journal de cycle de vie correspondant à la requête DSL
+        body:
+          application/json:
+            description: Journal de cycle de vie d'une Unité archivistique correspondant à la requête DSL
+            schema: DslTypes.DslGetByIdResponse
+            example: !include examples/logbook1Response.json
+
+  ObjectLifeCycleItemResponse:
+    description: Response model for one Logbook object life cycle item
+    is: [ StandardTraits.StandardOptionalHeader,
+      StandardTraits.StandardHeader200,
+      StandardTraits.StandardHeader401, StandardTraits.StandardHeader404, StandardTraits.StandardHeader412 ]
+    body:
+      application/json:
+        description:  Body contient la requête DSL unitaire au format JSON.
+        schema: DslTypes.DslGetByIdQuery
+        example: !include examples/logbook1Query.json
+    responses:
+      200:
+        description: Renvoie la liste de résultats contenant 1 journal de cycle de vie correspondant à la requête DSL
+        body:
+          application/json:
+            description: Journal de cycle de vie d'un Objet correspondant à la requête DSL
+            schema: DslTypes.DslGetByIdResponse
+            example: !include examples/logbook1Response.json
+
+  RegisterFileItemResponse:
+    description: Response model for one <<resourcePathName | !uppercamelcase>> download item
+    is: [ StandardTraits.StandardOptionalHeader,
+      StandardTraits.StandardHeader200,
+      StandardTraits.StandardHeader401, StandardTraits.StandardHeader404, StandardTraits.StandardHeader412 ]
+    responses:
+      200:
+        description: Returns one <<resourcePathName | !uppercamelcase>> file item
+        body:
+          application/octet-stream:
+            description: one <<resourcePathName | !uppercamelcase>> file item

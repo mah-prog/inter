@@ -1,0 +1,13 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 0,
+    "size": 0,
+    "offset": 0,
+    "limit": 0
+  },
+  "$context": {
+    "$action": [{ "$set": { "NewField": "New value" } }]
+  },
+  "$results": []
+}

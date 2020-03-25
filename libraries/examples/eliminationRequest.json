@@ -1,0 +1,13 @@
+{
+  "dslRequest": {
+    "$roots": [ "id0" ],
+    "$query": [
+      {
+        "$match": { "title": "titre" },
+        "$depth": 4
+      }
+    ],
+    "$threshold": 10000
+  },
+  "date": "2018-01-23"
+}

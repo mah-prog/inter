@@ -1,0 +1,7 @@
+{
+  "$query": {
+    "$exists": "Identifier"
+  },
+  "$filter": { "$limit": 100, "$offset": 10 },
+  "$projection": { "$fields": { "#id": 1, "start_date": 1, "state": 1 } }
+}
