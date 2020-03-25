@@ -533,15 +533,6 @@ documentation:
         Dans ce cas, la requête utilise le langage de requête DSL de type **modification unitaire (UPDATE BY ID)** de Vitam en entrée et retourne le statut de la mise à jour en résultat selon le DSL Vitam en cas de succès.
         Sinon, la requête doit spécifier le Content-Type comme application/octet-stream. Dans ce cas, elle permet de mettre à jour le fichier RNG ou XSD lié.
        is: [AdminTraits.AdminUpload, AdminTraits.AdminProfileUpload]
-       headers:
-         Content-Type:
-           description: Requis pour importer des profils.
-           required: false
-           enum: [ "application/json", "application/octet-stream" ]
-          X-Tenant-Id:
-            required: true
-          X-Access-Contract-Id:
-            required: false
 
 /griffin:
   displayName: griffons
