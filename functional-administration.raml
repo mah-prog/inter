@@ -137,10 +137,6 @@ documentation:
       description: |
         Retourne une liste de Règles de gestion contenant 1 seul résultat en cas de succès.
       is: [AdminTraits.AdminItemResponse]
-        X-Tenant-Id:
-          required: true
-        X-Access-Contract-Id:
-          required: false
     post:
       description: |
         Retourne une liste de Règles de gestion contenant 1 seul résultat en cas de succès. La requête utilise POST avec X-Http-Method-Override: GET
